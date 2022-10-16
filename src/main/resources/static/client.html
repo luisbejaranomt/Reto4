@@ -1,0 +1,45 @@
+<div id="formRegister">
+  <h1 class="title">CLIENTES</h1>
+  <div class="fieldRow hidden">
+    <div class="label">Id:</div>
+    <div class="field">
+      <input type="number" id="idClient">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Correo:</div>
+    <div class="field">
+      <input type="email" id="emailClient">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Contraseña:</div>
+    <div class="field">
+      <input type="password" id="passwordClient">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Nombre:</div>
+    <div class="field">
+      <input type="text" id="nameClient">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Edad:</div>
+    <div class="field">
+      <input type="number" id="ageClient">
+    </div>
+  </div>
+
+  <button class="buttom" onclick="saveClient()">Guardar</button>
+  <button class="buttom" onclick="getClients()">Listar</button>
+  <button class="buttom hidden" onclick="updateClient()">Actualizar</button>
+
+  <div id="listClients">
+
+  </div>
+</div>

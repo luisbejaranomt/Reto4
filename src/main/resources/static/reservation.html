@@ -1,0 +1,42 @@
+<div id="formRegister">
+  <h1 class="title">Reservaciones</h1>
+  <div class="fieldRow hidden">
+    <div class="label">Id:</div>
+    <div class="field">
+      <input type="number" id="idReservation">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Fecha&nbsp;Inicio:</div>
+    <div class="field">
+      <input type="date" id="startDateReservation">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Fecha&nbsp;Devolución:</div>
+    <div class="field">
+      <input type="date" id="devolutionDateReservation">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Cubículo:</div>
+    <div class="field">
+      <!-- <input type="number" id="categoryIdLibrary"> -->
+      <select class="" name="" id="libraryIdReservation">
+
+      </select>
+    </div>
+  </div>
+
+
+  <button class="buttom" onclick="saveReservation()">Guardar</button>
+  <button class="buttom" onclick="getReservations()">Listar</button>
+  <button class="buttom hidden" onclick="updateReservation()">Actualizar</button>
+
+  <div id="listReservations">
+
+  </div>
+</div>

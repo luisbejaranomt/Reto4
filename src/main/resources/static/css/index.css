@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#sectionLeft h3{
+    cursor: pointer;
+    padding: 3px;
+    padding-top: 5px;
+}
+
+body{
+    background: #eeb;
+
+}
+.header{
+    background: rgb(236, 236, 206);
+    width: 100%;
+    height: 100px;
+    text-align: center;
+
+}
+
+/* main = pantalla - header  == 100vh - 100 pixeles del header  -- VH significa viewport height (altura del dispositivo)  */
+.main{
+    /* background: yellowgreen; */
+    width: 100%;
+    height: calc(100vh - 200px); /*tome el 100 de la altura del dispositico y se resta 100 px (header) y 100 footer*/
+    display: flex; /*  las cajas se colocan una frente de la otra Si no se coloca se apilaria uan arriba y la otra abajo*/
+    justify-content: center; /* Alineacion horizontal*/
+    align-items: center;  /* alineacion vertical*/
+}
+
+.section{
+    background: rgb(161, 161, 118);
+    width: 15%;
+    height: 100%;
+
+}
+
+.aside{
+    /* background: grey; */
+    width: 85%;
+    height: 100%;
+
+
+}
+
+.footer{
+    background: rgb(236, 236, 206);
+    width: 100%;
+    height: 100px;
+    text-align: center;
+
+}
+
+.display{
+    display: none;
+}

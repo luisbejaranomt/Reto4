@@ -1,0 +1,56 @@
+<div id="formRegister">
+  <h1 class="title">CUBÍCULOS</h1>
+  <div class="fieldRow hidden">
+    <div class="label">Id:</div>
+    <div class="field">
+      <input type="number" id="idLibrary">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Objetivo:</div>
+    <div class="field">
+      <input type="text" id="targetLibrary">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Capacidad:</div>
+    <div class="field">
+      <input type="number" id="capacityLibrary">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Categoria:</div>
+    <div class="field">
+      <!-- <input type="number" id="categoryIdLibrary"> -->
+      <select class="" name="" id="categoryIdLibrary">
+
+      </select>
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Nombre:</div>
+    <div class="field">
+      <input type="text" id="nameLibrary">
+    </div>
+  </div>
+
+  <div class="fieldRow">
+    <div class="label">Descripción:</div>
+    <div class="field">
+      <input type="text" id="descriptionLibrary">
+    </div>
+  </div>
+
+
+  <button class="buttom" onclick="saveLibrary()">Guardar</button>
+  <button class="buttom" onclick="getLibraries()">Listar</button>
+  <button class="buttom hidden" onclick="updateLibrary()">Actualizar</button>
+
+  <div id="listLibraries">
+
+  </div>
+</div>
