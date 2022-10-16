@@ -24,4 +24,8 @@ public class LibraryRepository {
     public Library save(Library l){
         return libraryCrudRepository.save(l);
     }
+
+    public void delete(Library l){
+        libraryCrudRepository.delete(l);
+    }
 }
