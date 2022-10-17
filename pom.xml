@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mintic</groupId>
-    <artifactId>reto3</artifactId>
+    <artifactId>reto4</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>reto3</name>
-    <description>reto3</description>
+    <name>reto4</name>
+    <description>reto4</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
