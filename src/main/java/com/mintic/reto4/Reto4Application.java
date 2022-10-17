@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @EntityScan(basePackages = {"com.mintic.reto4.model"})
 @SpringBootApplication
-public class Reto3Application {
+public class Reto4Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Reto3Application.class, args);
+        SpringApplication.run(Reto4Application.class, args);
     }
 
 }
