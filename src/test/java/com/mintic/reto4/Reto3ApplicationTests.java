@@ -1,4 +1,4 @@
-/*
+
 package com.mintic.reto4;
 
 import org.junit.jupiter.api.Test;
@@ -12,4 +12,3 @@ class Reto3ApplicationTests {
     }
 
 }
-*/
