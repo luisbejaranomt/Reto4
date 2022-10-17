@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mintic - Reto 3 -</title>
+    <title>Mintic - Reto 4 -</title>
+
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 
     <script type="text/javascript" src="js/generalScript.js"></script>
     <script type="text/javascript" src="js/indexScript.js"></script>
@@ -31,7 +38,13 @@
 <div class="display">
     <input id="idUserActive">
 </div>
+<div id="loginzone">
 
+    <a href="/oauth2/authorization/github">Haz click para iniciar Sesión</a>
+</div>
+<div id="userZone" style="display: none">
+
+</div>
 <main class="main">
     <section class="section" id="sectionLeft">
         <h3 id="category">Categorías</h3>
@@ -49,4 +62,34 @@
 </footer>
 
 </body>
+
+<script type="text/javascript" src="js/myFunctionClient.js"></script>
+<script type="text/javascript">
+    $.get("/user",function(data){
+        console.log(data);
+        $("#loginzone").hide();
+        $("#userZone").empty();
+        //let k="Bienvenido "+data.name+"<br>";
+        let k="Bienvenido "+data.name+"<br>";
+
+        $("#userZone").append(k);
+       // $("#userZone").append("<img src='"+data.avatar_url+"'>");
+      //   $("#userZone").append("<img src='"+data.avatar_url+"'>");
+
+        //let button="<button onclick='logout()'>Logout</button>";
+        //$("#userZone").append(button);
+        //$("#userZone").show();
+
+    });
+
+    function logout(){
+        $.post("/logout", function() {
+            $("#userZone").html('');
+            $("#loginzone").show();
+            $("#userZone").hide();
+        })
+        return true;
+    }
+
+</script>
 </html>
