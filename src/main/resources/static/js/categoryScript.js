@@ -46,8 +46,8 @@ function getCategories(){  //Funcion Get
                 k += "<td>" + cs[i].name + "</td>";
                 k += "<td>" + cs[i].description + "</td>";
 
-               // k += "<td>" + "<button onclick='getDetailCategory("+cs[i].id+")'>Actualizar</button> " + "</td>";
-               // k += "<td>" + "<button onclick='deleteCategory("+cs[i].id+")'>Eliminar</button><br>" + "</td>";
+                k += "<td>" + "<button onclick='getDetailCategory("+cs[i].id+")'>Actualizar</button> " + "</td>";
+                k += "<td>" + "<button onclick='deleteCategory("+cs[i].id+")'>Eliminar</button><br>" + "</td>";
                 k += "</tr>";
 
             }
@@ -57,6 +57,93 @@ function getCategories(){  //Funcion Get
         },
         error : function(xhr, status) {
             alert('Error al modificar la Categoría. Revise los datos y/o conexión con el servidor');
+        }
+    });
+}
+
+function deleteCategory(idCategory) {
+    let data = {
+        id: idCategory
+    };
+    let dataToSend = JSON.stringify(data);
+    //console.log(dataToSend);
+    $.ajax({
+        url: "api/Category/" + idCategory,
+        type: 'DELETE',
+        //   dataType : 'json',
+        data: dataToSend,
+        contentType: 'application/json',
+        success: function () {
+            $("#idCategory").val("");
+            $("#nameCategory").val("");
+            $("#descriptionCategory").val("");
+        },
+        error: function (xhr, status) {
+            //     alert('ha sucedido un problema');
+        },
+        complete: function () {
+            getCategories();
+        }
+    });
+}
+
+function getDetailCategory(idCategory){
+
+     $.ajax({
+        url : "api/Category" + "/" + idCategory,
+        type : 'GET',
+        dataType : 'json',
+
+        success : function(categories) {
+            let cs = categories;
+
+            $("#idCategory").val(cs.id);
+            $("#nameCategory").val(cs.name);
+            $("#descriptionCategory").val(cs.description);
+
+
+        },
+        error : function(xhr, status) {
+
+            alert('Error al traer datos de la categpría');
+        }
+    });
+}
+
+function updateCategory(){
+    let idCategory=$("#idCategory").val();
+    let nameCategory=$("#nameCategory").val();
+    let descriptionCategory=$("#descriptionCategory").val();
+    if (idCategory === "" || nameCategory === "" || descriptionCategory === ""){
+        window.alert("Error. Campos vacios. Por favor ingresar datos");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+    let data={
+        id:idCategory,
+        name:nameCategory,
+        description:descriptionCategory,
+    };
+    let dataToSend=JSON.stringify(data);
+    //console.log(dataToSend);
+    $.ajax({
+        url : "api/Category/update",
+        type : 'PUT',
+        //   dataType : 'json',
+        data:dataToSend,
+        contentType:'application/json',
+        success : function() {
+            $("#idCategory").val("");
+            $("#nameCategory").val("");
+            $("#descriptionCategory").val("");
+        },
+        error : function(xhr, status) {
+            window.alert('Error al actualizar el cliente. Revise los datos y/o conexión con el servidor');
+        },
+        complete: function(){
+            getCategories();
         }
     });
 }

@@ -26,9 +26,8 @@ function getClients(){  //Funcion Get
                 k += "<td>" + cs[i].name + "</td>";
                 k += "<td>" + cs[i].age + "</td>";
                 k += "<td>" + "<button onclick='setUserActive("+cs[i].idClient+")'>Seleccionar Código</button><br>" + "</td>";
-
-               // k += "<td>" + "<button onclick='getDetailClient("+cs[i].id+")'>Actualizar</button> " + "</td>";
-               // k += "<td>" + "<button onclick='deleteClient("+cs[i].id+")'>Eliminar</button><br>" + "</td>";
+                k += "<td>" + "<button onclick='getDetailClient("+cs[i].idClient+")'>Actualizar</button> " + "</td>";
+                k += "<td>" + "<button onclick='deleteClient("+cs[i].idClient+")'>Eliminar</button><br>" + "</td>";
                 k += "</tr>";
 
 //                        $("#listClients").append(k);
@@ -42,6 +41,102 @@ function getClients(){  //Funcion Get
         }
     });
 }
+
+function deleteClient(idClient){
+    let data={
+        idClient:idClient
+    };
+    let dataToSend=JSON.stringify(data);
+    //console.log(dataToSend);
+    $.ajax({
+        url : "api/Client/" + idClient,
+        type : 'DELETE',
+        //   dataType : 'json',
+        data:dataToSend,
+        contentType:'application/json',
+        success : function() {
+            $("#idClient").val("");
+            $("#nameClient").val("");
+            $("#mailClient").val("");
+            $("#ageClient").val("");
+        },
+        error : function(xhr, status) {
+            //     alert('ha sucedido un problema');
+        },
+        complete: function(){
+            getClients();
+        }
+    })
+};
+
+
+function updateClient(){
+    let idClient=$("#idClient").val();
+    let passwordClient=$("#passwordClient").val();
+    let nameClient=$("#nameClient").val();
+    let mailClient=$("#emailClient").val();
+    let ageClient=$("#ageClient").val();
+    if (idClient === "" || passwordClient === "" || nameClient === "" || mailClient === "" || ageClient === ""){
+        window.alert("Error. Campos vacios. Por favor ingresar datos");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+    let data={
+        idClient:idClient,
+        password:passwordClient,
+        name:nameClient,
+        email:mailClient,
+        age:ageClient,
+    };
+    let dataToSend=JSON.stringify(data);
+    //console.log(dataToSend);
+    $.ajax({
+        url : "api/Client/update",
+        type : 'PUT',
+        //   dataType : 'json',
+        data:dataToSend,
+        contentType:'application/json',
+        success : function() {
+            $("#idClient").val("");
+            $("#emailClient").val("");
+            $("#passwordClient").val("");
+            $("#nameClient").val("");
+            $("#ageClient").val("");
+        },
+        error : function(xhr, status) {
+            alert('Error al actualizar el cliente. Revise los datos y/o conexión con el servidor');
+        },
+        complete: function(){
+            getClients();
+        }
+    });
+}
+
+function getDetailClient(idClient){
+    $.ajax({
+        url : "api/Client" + "/" + idClient,
+        type : 'GET',
+        dataType : 'json',
+
+        success : function(clients) {
+            let cs = clients;
+            $("#idClient").val(cs.idClient);
+            $("#emailClient").val(cs.email);
+            $("#passwordClient").val(cs.password);
+            $("#nameClient").val(cs.name);
+            $("#ageClient").val(cs.age);
+            $("#ageClient").val(cs.age);
+        },
+        error : function(xhr, status) {
+
+            window.alert('Error al traer datos del cliente');
+        }
+    });
+}
+
+
 
 function saveClient() {
 //    let idClient=$("#idClient").val();

@@ -61,8 +61,8 @@ function getLibraries(){  //Funcion Get
                 k += "<td>" + cs[i].capacity + "</td>";
                 k += "<td>" + cs[i].category.name + "</td>";
                 k += "<td>" + cs[i].name + "</td>";
-              //  k += "<td>" + "<button onclick='getDetailLibrary("+cs[i].id+")'>Actualizar</button> " + "</td>";
-              //  k += "<td>" + "<button onclick='deleteLibrary("+cs[i].id+")'>Eliminar</button><br>" + "</td>";
+                k += "<td>" + "<button onclick='getDetailLibrary("+cs[i].id+")'>Actualizar</button> " + "</td>";
+                k += "<td>" + "<button onclick='deleteLibrary("+cs[i].id+")'>Eliminar</button><br>" + "</td>";
                 k += "</tr>";
 
 //                        $("#listlibraries").append(k);
@@ -73,6 +73,57 @@ function getLibraries(){  //Funcion Get
         },
         error : function(xhr, status) {
             alert('Error al modificar el librarye. Revise los datos y/o conexión con el servidor');
+        }
+    });
+}
+
+function deleteLibrary(idLibrary){
+    let data = {
+        id: idLibrary
+    };
+    let dataToSend = JSON.stringify(data);
+    //console.log(dataToSend);
+    $.ajax({
+        url: "api/Lib/" + idLibrary,
+        type: 'DELETE',
+        //   dataType : 'json',
+        data: dataToSend,
+        contentType: 'application/json',
+        success: function () {
+            $("#idLibrary").val("");
+            $("#targetLibrary").val("");
+            $("#capacityLibrary").val("");
+            $("#categoryIdLibrary").val("");
+            $("#nameLibrary").val("");
+            $("#descriptionLibrary").val("");
+        },
+        error: function (xhr, status) {
+            //     alert('ha sucedido un problema');
+        },
+        complete: function () {
+            getLibraries();
+        }
+    });
+}
+
+function getDetailLibrary(id){
+    $.ajax({
+        url : "api/Lib" + "/" + id,
+        type : 'GET',
+        dataType : 'json',
+
+        success : function(libraries) {
+            let ls = libraries;
+            $("#idLibrary").val(ls.id);
+            $("#targetLibrary").val(ls.target);
+            $("#capacityLibrary").val(ls.capacity);
+            $("#categoryIdLibrary").val(ls.category.id);
+            $("#nameLibrary").val(ls.name);
+            $("#descriptionLibrary").val(ls.description);
+        },
+        error : function(xhr, status) {
+
+            alert('Error al traer datos de la categpría');
         }
     });
 }
@@ -90,6 +141,58 @@ function getLibraryData(){
     }
     return data;
     //{"target":"Lectura4","capacity":5,"category":{"id":1},"name":"Sala de lectura para 5 personas","description":"Sala de lectura para 5 personas"}
+}
+
+function updateLibrary(){
+    let idLibrary=$("#idLibrary").val();
+    let targetLibrary=$("#targetLibrary").val();
+    let capacityLibrary=$("#capacityLibrary").val();
+    let categoryIdLibrary=$("#categoryIdLibrary").val();
+    let nameLibrary=$("#nameLibrary").val();
+    let descriptionLibrary=$("#descriptionLibrary").val();
+
+    if (idLibrary === "" || targetLibrary === "" || capacityLibrary === "" ||
+        categoryIdLibrary === "" || nameLibrary === "" || descriptionLibrary === ""){
+        window.alert("Error. Campos vacios. Por favor ingresar datos");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+    let data={
+        id:idLibrary,
+        name:nameLibrary,
+        target:targetLibrary,
+        capacity:capacityLibrary,
+        description:descriptionLibrary,
+        category:{
+            id:categoryIdLibrary,
+        },
+    };
+    let dataToSend=JSON.stringify(data);
+
+    //console.log(dataToSend);
+    $.ajax({
+        url : "api/Lib/update",
+        type : 'PUT',
+        //   dataType : 'json',
+        data:dataToSend,
+        contentType:'application/json',
+        success : function() {
+            $("#idLibrary").val("");
+            $("#targetLibrary").val("");
+            $("#capacityLibrary").val("");
+            $("#categoryIdLibrary").val("");
+            $("#nameLibrary").val("");
+            $("#descriptionLibrary").val("");
+        },
+        error : function(xhr, status) {
+            window.alert('Error al actualizar el cliente. Revise los datos y/o conexión con el servidor');
+        },
+        complete: function(){
+            getLibraries();
+        }
+    });
 }
 
 function saveLibrary() {
@@ -139,4 +242,7 @@ function saveLibrary() {
             getLibraries();
         }
     });
+
+
+
 }

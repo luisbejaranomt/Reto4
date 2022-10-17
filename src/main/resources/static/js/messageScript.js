@@ -27,8 +27,8 @@ function getMessages(){  //Funcion Get
                 k += "<td>" + cs[i].client.idClient + "</td>";
                 k += "<td>" + cs[i].client.name + "</td>";
 
-               // k += "<td>" + "<button onclick='getDetailMessage("+cs[i].id+")'>Actualizar</button> " + "</td>";
-               // k += "<td>" + "<button onclick='deleteMessage("+cs[i].id+")'>Eliminar</button><br>" + "</td>";
+                k += "<td>" + "<button onclick='getDetailMessage("+cs[i].idMessage+")'>Actualizar</button> " + "</td>";
+                k += "<td>" + "<button onclick='deleteMessage("+cs[i].idMessage+")'>Eliminar</button><br>" + "</td>";
                 k += "</tr>";
 
 //                        $("#listMessages").append(k);
@@ -42,6 +42,109 @@ function getMessages(){  //Funcion Get
         }
     });
 }
+function initializeDataMessage(){
+    $("#idMessage").val("");
+    $("#messageTextMessage").val("");
+    $("#libraryIdMessage").val("");
+    return;
+}
+
+function deleteMessage(idMessage){
+    window.alert("aaa  " + idMessage)
+    let data = {
+        id: idMessage,
+    };
+    let dataToSend = JSON.stringify(data);
+
+    $.ajax({
+        url: "api/Message/" + idMessage,
+        type: 'DELETE',
+        //   dataType : 'json',
+        data: dataToSend,
+        contentType: 'application/json',
+        success: function () {
+            initializeDataMessage()
+        },
+        error: function (xhr, status) {
+            //     alert('ha sucedido un problema');
+        },
+        complete: function () {
+            getMessages();
+        }
+    });
+}
+
+function getDetailMessage(idMessage){
+    $.ajax({
+        url : "api/Message" + "/" + idMessage,
+        type : 'GET',
+        dataType : 'json',
+
+        success : function(messages) {
+            let ms = messages;
+            $("#idMessage").val(ms.idMessage);
+            $("#messageTextMessage").val(ms.messageText);
+            $("#libraryIdMessage").val(ms.lib.id);
+
+        },
+        error : function(xhr, status) {
+
+            alert('Error al traer datos de la categpría');
+        }
+    });
+}
+
+function updateMessage(){
+    if ($("#idUserActive").val() === ""){
+        window.alert("Error. Debe Seleccionar un código de cliente - Opción Clientes - Listar - Seleccionar Código.");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+
+    let idMessage=$("#idMessage").val();
+    let messageTextMessage=$("#messageTextMessage").val();
+    let libraryIdMessage=$("#libraryIdMessage").val();
+    if (idMessage === "" || messageTextMessage === "" || libraryIdMessage === ""){
+        window.alert("Error. Campos vacios. Por favor ingresar datos");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+
+    let data={
+        idMessage:idMessage,
+        messageText:messageTextMessage,
+        lib:{
+            id:libraryIdMessage
+        },
+        client:{
+            idClient: $("#idUserActive").val(),
+        }
+    };
+
+    let dataToSend=JSON.stringify(data);
+
+    $.ajax({
+        url : "api/Message/update",
+        type : 'PUT',
+        //   dataType : 'json',
+        data:dataToSend,
+        contentType:'application/json',
+        success : function() {
+            initializeDataMessage()
+        },
+        error : function(xhr, status) {
+            window.alert('Error al actualizar el cliente. Revise los datos y/o conexión con el servidor');
+        },
+        complete: function(){
+            getMessages();
+        }
+    });
+}
+
 
 function getMessageData(){
 

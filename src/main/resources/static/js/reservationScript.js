@@ -33,8 +33,8 @@ function getReservations(){  //Funcion Get
                 k += "<td>" + formatDate(re[i].devolutionDate) + "</td>";
                 k += "<td>" + re[i].lib.name + "</td>";
                 k += "<td>" + re[i].client.name + "</td>";
-                //  k += "<td>" + "<button onclick='getDetailReservation("+cs[i].idReservation+")'>Actualizar</button> " + "</td>";
-                //  k += "<td>" + "<button onclick='deleteReservation("+cs[i].idReservation+")'>Eliminar</button><br>" + "</td>";
+                k += "<td>" + "<button onclick='getDetailReservation("+re[i].idReservation+")'>Actualizar</button> " + "</td>";
+                k += "<td>" + "<button onclick='deleteReservation("+re[i].idReservation+")'>Eliminar</button><br>" + "</td>";
                 k += "</tr>";
             }
             k += "</table>";
@@ -47,6 +47,37 @@ function getReservations(){  //Funcion Get
     });
 }
 
+function deleteReservation(idReservation){
+    let data = {
+        id: idReservation,
+    };
+    let dataToSend = JSON.stringify(data);
+
+    $.ajax({
+        url: "api/Reservation/" + idReservation,
+        type: 'DELETE',
+        //   dataType : 'json',
+        data: dataToSend,
+        contentType: 'application/json',
+        success: function () {
+            initializeDataReservation();
+        },
+        error: function (xhr, status) {
+            //     alert('ha sucedido un problema');
+        },
+        complete: function () {
+            getReservations();
+        }
+    });
+}
+
+function initializeDataReservation(){
+    $("#idReservation").val("");
+    $("#startDateReservation").val("");
+    $("#devolutionDateReservation").val("");
+    $("#libraryIdReservation").val("");
+    return;
+}
 function getReservationData(){
     let data ={
         startDate:$("#startDateReservation").val(),
@@ -59,6 +90,90 @@ function getReservationData(){
         },
     }
     return data;
+}
+
+function getDetailReservation(isReservation){
+    $.ajax({
+        url : "api/Reservation" + "/" + isReservation,
+        type : 'GET',
+        dataType : 'json',
+
+        success : function(reservations) {
+            let rs = reservations;
+            $("#idReservation").val(rs.idReservation);
+            $("#startDateReservation").val(formatDate(rs.startDate));
+            $("#devolutionDateReservation").val(formatDate(rs.devolutionDate));
+            $("#libraryIdReservation").val(rs.lib.id);
+        },
+        error : function(xhr, status) {
+
+            alert('Error al traer datos de Reservación');
+        }
+    });
+}
+
+function updateReservation(){
+    if ($("#idUserActive").val() === ""){
+        window.alert("Error. Debe Seleccionar un código de cliente - Opción Clientes - Listar - Seleccionar Código.");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+
+    let idReservation=$("#idReservation").val();
+    let startDateReservation=$("#startDateReservation").val();
+    let devolutionDateReservation=$("#devolutionDateReservation").val();
+    let libraryIdReservation=$("#libraryIdReservation").val();
+
+    if (idReservation === "" || startDateReservation === "" || devolutionDateReservation === "" ||
+        libraryIdReservation === ""){
+        window.alert("Error. Campos vacios. Por favor ingresar datos");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+
+    if (startDateReservation > devolutionDateReservation ){
+        window.alert("Error. Fecha Inicial mayor que Fecha Devolución");
+        return {
+            error: true,
+            message: 'Parametros Obligatorios'
+        }
+    }
+
+    let data={
+        idReservation:idReservation,
+        startDate:startDateReservation,
+        devolutionDate:devolutionDateReservation,
+        lib:{
+            id:libraryIdReservation
+        },
+        client:{
+            idClient: $("#idUserActive").val(),
+        }
+    };
+
+    let dataToSend=JSON.stringify(data);
+
+    $.ajax({
+        url : "api/Reservation/update",
+        type : 'PUT',
+        //   dataType : 'json',
+        data:dataToSend,
+        contentType:'application/json',
+        success : function() {
+            initializeDataReservation()
+        },
+        error : function(xhr, status) {
+            window.alert('Error al actualizar la reservación. Revise los datos y/o conexión con el servidor');
+        },
+        complete: function(){
+            getReservations();
+        }
+    });
+
 }
 
 function saveReservation() {
